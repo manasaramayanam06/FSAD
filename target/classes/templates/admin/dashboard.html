@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo">🎓 Smart Campus - Admin</a>
+        <div class="nav-links">
+            <a href="/">Public Site</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h1>Event Management</h1>
+            <a th:href="@{/admin/event/new}" class="btn btn-primary">+ Create New Event</a>
+        </div>
+
+        <div class="glass-card" style="margin-bottom: 2rem;">
+            <form th:action="@{/admin/dashboard}" method="get" style="display: flex; gap: 1rem;">
+                <input type="text" name="search" th:value="${searchQuery}" class="form-control" placeholder="Search by Department or Type..." style="flex: 1;">
+                <button type="submit" class="btn btn-primary">Search</button>
+                <a th:href="@{/admin/dashboard}" class="btn" style="background: rgba(255,255,255,0.1); color: white;">Clear</a>
+            </form>
+        </div>
+
+        <div class="glass-card" style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Department</th>
+                        <th>Date</th>
+                        <th>Registrations</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="event : ${events}">
+                        <td th:text="${event.title}"></td>
+                        <td th:text="${event.type}"></td>
+                        <td th:text="${event.department}"></td>
+                        <td th:text="${#temporals.format(event.eventDate, 'dd MMM yyyy, HH:mm')}"></td>
+                        <td>
+                            <span style="background: var(--success); padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.8rem;" th:text="${stats.get(event.id) != null ? stats.get(event.id) : 0}"></span>
+                        </td>
+                        <td>
+                            <a th:href="@{/admin/event/edit/{id}(id=${event.id})}" class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">Edit</a>
+                            <a th:href="@{/admin/event/delete/{id}(id=${event.id})}" class="btn btn-danger" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="return confirm('Are you sure?');">Delete</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${events.empty}">
+                        <td colspan="6" style="text-align: center; color: var(--text-secondary);">No events found.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
