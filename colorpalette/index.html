@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Palette Sample</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #text {
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="text">unity is strength</div>
+    <div>
+        <label for="colorSelect">Select Color:</label>
+        <select id="colorSelect">
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <option value="yellow">Yellow</option>
+            <option value="purple">Purple</option>
+            <option value="orange">Orange</option>
+        </select>
+    </div>
+    <div>
+        <button onclick="changeForeground()">Change Foreground</button>
+        <button onclick="changeBackground()">Change Background</button>
+    </div>
+    <div id="colorList">Available colors: red, blue, green, yellow, purple, orange</div>
+    <script>
+        function changeForeground() {
+            const color = document.getElementById('colorSelect').value;
+            document.getElementById('text').style.color = color;
+        }
+        function changeBackground() {
+            const color = document.getElementById('colorSelect').value;
+            document.getElementById('text').style.backgroundColor = color;
+        }
+    </script>
+</body>
+</html>
