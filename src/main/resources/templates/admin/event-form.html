@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Event Form</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/admin/dashboard" class="logo">🎓 Admin Dashboard</a>
+    </nav>
+
+    <div class="container" style="max-width: 800px;">
+        <div class="glass-card">
+            <h2 th:text="${event.id == null ? 'Create New Event' : 'Edit Event'}">Event Form</h2>
+            
+            <form th:action="@{/admin/event/save}" th:object="${event}" method="post">
+                <input type="hidden" th:field="*{id}">
+                
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" class="form-control" th:field="*{title}" placeholder="Event Title">
+                    <div class="error-text" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" th:field="*{description}" rows="4" placeholder="Event Description"></textarea>
+                    <div class="error-text" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Date & Time</label>
+                        <input type="datetime-local" class="form-control" th:field="*{eventDate}">
+                        <div class="error-text" th:if="${#fields.hasErrors('eventDate')}" th:errors="*{eventDate}"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Department</label>
+                        <input type="text" class="form-control" th:field="*{department}" placeholder="e.g., Computer Science">
+                        <div class="error-text" th:if="${#fields.hasErrors('department')}" th:errors="*{department}"></div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select class="form-control" th:field="*{type}">
+                            <option value="Seminar">Seminar</option>
+                            <option value="Workshop">Workshop</option>
+                            <option value="Hackathon">Hackathon</option>
+                            <option value="Cultural">Cultural</option>
+                        </select>
+                        <div class="error-text" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Max Participants</label>
+                        <input type="number" class="form-control" th:field="*{maxParticipants}" placeholder="e.g., 100">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Location (String)</label>
+                    <input type="text" class="form-control" th:field="*{location}" placeholder="Auditorium A">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Latitude (for Maps)</label>
+                        <input type="number" step="any" class="form-control" th:field="*{latitude}" placeholder="e.g., 40.7128">
+                    </div>
+                    <div class="form-group">
+                        <label>Longitude (for Maps)</label>
+                        <input type="number" step="any" class="form-control" th:field="*{longitude}" placeholder="e.g., -74.0060">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Save Event</button>
+                    <a th:href="@{/admin/dashboard}" class="btn" style="flex: 1; background: rgba(255,255,255,0.1); color: white;">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
