@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${event.title}">Event Details</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        .details-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        @media(max-width: 768px) {
+            .details-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo">🎓 Smart Campus</a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="details-grid">
+            <div class="glass-card">
+                <h1 th:text="${event.title}">Event Title</h1>
+                <p style="color: var(--accent); font-weight: bold;" th:text="${event.type} + ' - ' + ${event.department}">Type - Dept</p>
+                <p><strong>Date:</strong> <span th:text="${#temporals.format(event.eventDate, 'dd MMM yyyy, HH:mm')}"></span></p>
+                <p><strong>Location:</strong> <span th:text="${event.location}"></span></p>
+                <div style="margin: 2rem 0;">
+                    <h3>Description</h3>
+                    <p th:text="${event.description}" style="color: var(--text-secondary); line-height: 1.6;"></p>
+                </div>
+                
+                <a th:href="@{/register/{id}(id=${event.id})}" class="btn btn-primary" style="width: 100%; box-sizing: border-box; text-align: center;">Register for Event</a>
+            </div>
+
+            <div class="glass-card">
+                <h3>Event Location</h3>
+                <div id="map"></div>
+                <input type="hidden" id="eventLat" th:value="${event.latitude != null ? event.latitude : 40.7128}">
+                <input type="hidden" id="eventLng" th:value="${event.longitude != null ? event.longitude : -74.0060}">
+                
+                <div style="margin-top: 2rem;" id="weather-widget">
+                    <h3>Weather Forecast</h3>
+                    <p id="weather-info" style="color: var(--text-secondary);">Loading weather data...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const lat = parseFloat(document.getElementById('eventLat').value);
+            const lng = parseFloat(document.getElementById('eventLng').value);
+            
+            const map = L.map('map').setView([lat, lng], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+            L.marker([lat, lng]).addTo(map).bindPopup("Event Location").openPopup();
+
+            // Simulate Weather API call
+            setTimeout(() => {
+                document.getElementById('weather-info').innerHTML = 
+                    "🌤️ <strong>Sunny</strong>, 24°C <br><small>Perfect day for the event!</small>";
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
