@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify OTP</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo">🎓 Smart Campus</a>
+    </nav>
+
+    <div class="container" style="max-width: 500px;">
+        
+        <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+        <div class="glass-card" style="text-align: center;">
+            <h2 style="margin-top: 0;">Enter OTP</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">Please check your email and enter the 4-digit code.</p>
+            
+            <form th:action="@{/verify-otp}" method="post">
+                <input type="hidden" name="regId" th:value="${regId}">
+                <div class="form-group">
+                    <input type="text" name="otp" class="form-control" style="font-size: 2rem; letter-spacing: 0.5rem; text-align: center;" maxlength="4" placeholder="••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Verify & Confirm Registration</button>
+            </form>
+            <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-secondary);">For development, check the server console for the OTP.</p>
+        </div>
+    </div>
+</body>
+</html>
